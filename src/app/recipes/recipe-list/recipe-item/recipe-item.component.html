@@ -1,7 +1,8 @@
-<!-- moved from the recipe-list template -->
+<!-- adding an event listener to determine which recipe is clicked -->
 <a
        href="#"
-       class="list-group-item clearfix">
+       class="list-group-item clearfix"
+       (click)="onSelected()">
 
       <div class="pull-left">
         <!--the following recipe name and desc are coming from recipe.model.ts file -->

@@ -1,21 +1,15 @@
 <!-- adding an event listener to determine which recipe is clicked -->
-<a
-       href="#"
-       class="list-group-item clearfix"
-       (click)="onSelected()">
+<a style="cursor: pointer" class="list-group-item clearfix" (click)="onSelected()">
 
-      <div class="pull-left">
-        <!--the following recipe name and desc are coming from recipe.model.ts file -->
-        <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
-        <p class="list-group-item-text">{{ recipe.description }}</p>
-      </div>
-      <span class="pull-right">
-        <!--[src] below is an example of using property binding-->
-       
+  <div class="pull-left">
+    <!--the following recipe name and desc are coming from recipe.model.ts file -->
+    <h4 class="list-group-item-heading">{{ recipe.name }}</h4>
+    <p class="list-group-item-text">{{ recipe.description }}</p>
+  </div>
+  <span class="pull-right">
+    <!--[src] below is an example of using property binding-->
 
-        <img [src]="recipe.imagePath"
-             alt="{{ recipe.name }}"
-             class="img-responsive"
-             style="max-height: 50px;" />
-      </span>
-    </a>
+
+    <img [src]="recipe.imagePath" alt="{{ recipe.name }}" class="img-responsive" style="max-height: 50px;" />
+  </span>
+</a>

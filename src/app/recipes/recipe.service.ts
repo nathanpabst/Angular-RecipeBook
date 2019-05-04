@@ -25,9 +25,7 @@ export class RecipeService {
             ])
       ];
 
-      constructor(private shoppingListService: ShoppingListService) {
-
-      }
+      constructor(private shoppingListService: ShoppingListService) {}
 
       getRecipes() {
           return this.recipes.slice();

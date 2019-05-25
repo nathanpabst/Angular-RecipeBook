@@ -15,7 +15,9 @@ export class DataStorageService {
             this.recipeService.getRecipes());
     }
 
-    // TODO: fetch is not working as expected. delete a recipe, then fetch to re-create the issue.
+    // TODO: fetch is not working as expected.
+    // delete a recipe, then fetch to re-create the issue.
+    // see section 19
     getRecipes() {
         this.http.get('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json')
             .pipe(map(

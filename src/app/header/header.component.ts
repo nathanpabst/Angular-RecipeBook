@@ -13,4 +13,8 @@ export class HeaderComponent {
     this.dataStorageService.storeRecipes()
       .subscribe(response => console.log(response));
   }
+
+  onFetchData() {
+    this.dataStorageService.getRecipes();
+  }
 }

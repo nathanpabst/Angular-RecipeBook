@@ -23,32 +23,14 @@ export class DataStorageService {
     fetchRecipes() {
         this.http
         .get<Recipe[]>('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json')
+        .pipe(map(recipes => {
+            return recipes.map(recipe => {
+                return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
+            });
+        }))
         .subscribe(recipes => {
             this.recipeService.setRecipes(recipes);
         });
     }
 
-    // TODO: fetch is not working as expected.
-    // delete a recipe, then fetch to re-create the issue.
-    // see section 19
-//     getRecipes() {
-//         this.http.get('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json')
-//             .pipe(map(
-//                 (response) => {
-//                     const recipes: Recipe[] = response.json();
-//                     for (let recipe of recipes) {
-//                         if (!recipe.ingredients) {
-//                             // console.log('from data-storage: ' + recipe);
-//                             recipe.ingredients = [];
-//                         }
-//                     }
-//                     return recipes;
-//                 }))
-//             .subscribe(
-//                 (recipes: Recipe[]) => {
-//                     this.recipeService.setRecipes(recipes);
-//                     // console.log(recipes);
-//                 }
-//             );
-//     }
 }

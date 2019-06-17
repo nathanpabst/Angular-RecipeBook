@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RecipeService } from '../recipes/recipe.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Recipe } from '../recipes/recipe.model';
+import { RecipeService } from '../recipes/recipe.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class DataStorageService {
-    constructor(private http: HttpClient, private recipeService: RecipeService) {}
+    constructor(private http: HttpClient, private recipeService: RecipeService) { }
 
     storeRecipes() {
         const recipes = this.recipeService.getRecipes();
-        return this.http
+        this.http
             .put('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json',
                 recipes
             )
@@ -20,17 +20,23 @@ export class DataStorageService {
             });
     }
 
+    // I don't think this method is working as expected. Data is not returning from the DB.
     fetchRecipes() {
-        this.http
-        .get<Recipe[]>('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json')
-        .pipe(map(recipes => {
-            return recipes.map(recipe => {
-                return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : [] };
-            });
-        }))
-        .subscribe(recipes => {
-            this.recipeService.setRecipes(recipes);
-        });
+        return this.http
+            .get<Recipe[]>('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json')
+            .pipe(
+                map(recipes => {
+                    return recipes.map(recipe => {
+                        return {
+                            ...recipe,
+                            ingredients: recipe.ingredients ? recipe.ingredients : []
+                        };
+                    });
+                }),
+                tap(recipes => {
+                    this.recipeService.setRecipes(recipes);
+                })
+            );
     }
 
 }

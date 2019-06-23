@@ -9,7 +9,6 @@ import { RecipeService } from './recipe.service';
 export class RecipesResolverService implements Resolve<Recipe[]> {
     constructor(private dataStorageService: DataStorageService, private recipeService: RecipeService) { }
 
-    // resolve handles the subscribe action in this component by determining when data is present
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const recipes = this.recipeService.getRecipes();
 

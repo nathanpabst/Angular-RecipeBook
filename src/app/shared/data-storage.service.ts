@@ -4,7 +4,7 @@ import { map, tap } from 'rxjs/operators';
 import { Recipe } from '../recipes/recipe.model';
 import { RecipeService } from '../recipes/recipe.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 
 export class DataStorageService {
     constructor(private http: HttpClient, private recipeService: RecipeService) { }
@@ -16,7 +16,7 @@ export class DataStorageService {
                 recipes
             )
             .subscribe(response => {
-                console.log(response);
+                console.log('from data-storage', response);
             });
     }
 

@@ -19,23 +19,24 @@ export class RecipeEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params
-    .subscribe(
-      (params: Params) => {
-        this.id = +params.id;
-        this.editMode = params.id != null;
-        this.initForm();
-      }
-    );
+      .subscribe(
+        (params: Params) => {
+          this.id = +params.id;
+          this.editMode = params.id != null;
+          this.initForm();
+        }
+      );
   }
 
   onSubmit() {
+    // console.log('from recipe-edit', this.recipeForm);
     if (this.editMode) {
       this.recipeService.updateRecipe(this.id, this.recipeForm.value);
-      } else {
-        this.recipeService.addRecipe(this.recipeForm.value);
-      }
-    this.onCancel();
+    } else {
+      this.recipeService.addRecipe(this.recipeForm.value);
     }
+    this.onCancel();
+  }
 
   onAddIngredient() {
     (this.recipeForm.get('ingredients') as FormArray).push(
@@ -54,7 +55,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   private initForm() {
@@ -83,12 +84,17 @@ export class RecipeEditComponent implements OnInit {
       }
     }
 
+    // example of a reactive form
     this.recipeForm = new FormGroup({
       name: new FormControl(recipeName, Validators.required),
       imagePath: new FormControl(recipeImagePath, Validators.required),
       description: new FormControl(recipeDescription, Validators.required),
       ingredients: recipeIngredients
     });
+  }
+
+  getControls() {
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 
 }

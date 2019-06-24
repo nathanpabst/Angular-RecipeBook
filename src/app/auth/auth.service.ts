@@ -37,18 +37,25 @@ export class AuthService {
                 password,
                 returnSecureToken: true,
             }
-        );
+        ).pipe(catchError(this.handleError));
     }
 
     private handleError(errorResponse: HttpErrorResponse) {
         let errorMessage = 'Oops! An unknown error occurred.';
-            if (!errorResponse.error || !errorResponse.error.error) {
-                return throwError(errorMessage);
-            }
-            switch (errorResponse.error.error.message) {
-                case 'EMAIL_EXISTS':
-                    errorMessage = 'This email address is already in use.';
-            }
+        if (!errorResponse.error || !errorResponse.error.error) {
             return throwError(errorMessage);
+        }
+        switch (errorResponse.error.error.message) {
+            case 'EMAIL_EXISTS':
+                errorMessage = 'This email address is already in use.';
+                break;
+            case 'EMAIL_NOT_FOUND':
+                errorMessage = 'This email address cannot be found.';
+                break;
+            case 'INVALID_PASSWORD':
+                errorMessage = 'Invalid password.';
+                break;
+        }
+        return throwError(errorMessage);
     }
 }

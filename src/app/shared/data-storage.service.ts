@@ -22,45 +22,24 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-        // using exhaustMap to combine two observables into one...
-        return this.authService.user.pipe(
-            take(1),
-            exhaustMap(user => {
-                return this.http
-                    .get<Recipe[]>(
-                        'https://angular-recipebook-bb4a1.firebaseio.com/recipes.json',
-                        {
-                            params: new HttpParams().set('auth', user.token)
-                        }
-                    );
-            }),
-            map(recipes => {
-                return recipes.map(recipe => {
-                    return {
-                        ...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []
-                    };
-                });
-            }),
-            tap(recices => {
-                console.log('from data-storage: ', recices),
-                    this.recipeService.setRecipes(recices);
-            }));
+        return this.http
+            .get<Recipe[]>(
+                'https://angular-recipebook-bb4a1.firebaseio.com/recipes.json'
+            )
+            .pipe(
+                map(recipes => {
+                    return recipes.map(recipe => {
+                        return {
+                            ...recipe,
+                            ingredients: recipe.ingredients ? recipe.ingredients : []
+                        };
+                    });
+                }),
+                tap(recices => {
+                    console.log('from data-storage: ', recices),
+                        this.recipeService.setRecipes(recices);
+                }));
 
-
-        // .get<Recipe[]>('https://angular-recipebook-bb4a1.firebaseio.com/recipes.json')
-        // .pipe(
-        //     map(recipes => {
-        //         return recipes.map(recipe => {
-        //             return {
-        //                 ...recipe,
-        //                 ingredients: recipe.ingredients ? recipe.ingredients : []
-        //             };
-        //         });
-        //     }),
-        //     tap(recipes => {
-        //         this.recipeService.setRecipes(recipes);
-        //     })
-        // );
     }
 
 }

@@ -22,6 +22,7 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
+        // using exhaustMap to combine two observables into one...
         return this.authService.user.pipe(
             take(1),
             exhaustMap(user => {

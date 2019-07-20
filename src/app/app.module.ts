@@ -9,7 +9,6 @@ import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeService } from './recipes/recipe.service';
 import { AuthComponent } from './auth/auth.component';
-import { DataStorageService } from './shared/data-storage.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingModule } from './shopping-list/shopping.module';
@@ -34,7 +33,6 @@ import { SharedModule } from './shared/shared.module';
   providers: [
     ShoppingListService,
     RecipeService,
-    DataStorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { ShoppingListComponent } from './shopping-list.component';
 import { ShoppingEditComponent } from './shopping-edit/shopping-edit.component';
@@ -12,9 +12,15 @@ import { ShoppingEditComponent } from './shopping-edit/shopping-edit.component';
         ShoppingEditComponent,
     ],
     imports: [
-        RouterModule,
         CommonModule,
-        ReactiveFormsModule
+        FormsModule,
+        RouterModule.forChild([
+            { path: 'shopping-list', component: ShoppingListComponent },
+        ]),
+    ],
+    exports: [
+        ShoppingListComponent,
+        ShoppingEditComponent,
     ]
 })
 

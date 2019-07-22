@@ -18,10 +18,6 @@ import { SharedModule } from '../shared/shared.module';
         ]),
         SharedModule
     ],
-    exports: [
-        ShoppingListComponent,
-        ShoppingEditComponent,
-    ]
 })
 
 export class ShoppingModule {}

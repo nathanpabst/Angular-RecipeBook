@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from './shopping-list.service';
 import { LoggingService } from '../logging.service';
@@ -7,24 +9,30 @@ import { LoggingService } from '../logging.service';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.css'],
+  styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  ingredients: Ingredient[];
+  ingredients: Observable<{ingredients: Ingredient[] }>;
   private subscription: Subscription;
 
-  constructor(private shoppingListService: ShoppingListService, private loggingService: LoggingService) { }
+  constructor(
+    private shoppingListService: ShoppingListService,
+    private loggingService: LoggingService,
+    private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>
+  ) {}
 
   ngOnInit() {
-    this.ingredients = this.shoppingListService.getIngredients();
-    this.subscription = this.shoppingListService.ingredientsChanged
-      .subscribe(
-        (ingredients: Ingredient[]) => {
-          this.ingredients = ingredients;
-        }
-      );
+    this.ingredients = this.store.select('shoppingList');
+    // this.ingredients = this.shoppingListService.getIngredients();
+    // this.subscription = this.shoppingListService.ingredientsChanged.subscribe(
+    //   (ingredients: Ingredient[]) => {
+    //     this.ingredients = ingredients;
+    //   }
+    // );
 
-    this.loggingService.printLog('Oh hey, I am from the shopping-list component OnInit');
+    this.loggingService.printLog(
+      'Oh hey, I am from the shopping-list component OnInit'
+    );
   }
 
   onEditItem(index: number) {
@@ -32,7 +40,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
-
 }

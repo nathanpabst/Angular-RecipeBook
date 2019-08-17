@@ -12,7 +12,7 @@ import { LoggingService } from '../logging.service';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  ingredients: Observable<{ingredients: Ingredient[] }>;
+  ingredients: Observable<{ ingredients: Ingredient[] }>;
   private subscription: Subscription;
 
   constructor(

@@ -1,6 +1,5 @@
 import { Ingredient } from '../../shared/ingredient.model';
 import * as ShoppingListActions from './shopping-list.actions';
-import { stat } from 'fs';
 
 export interface State {
   ingredients: Ingredient[];

@@ -31,53 +31,7 @@ export class AuthService {
     private store: Store<fromApp.AppState>
   ) {}
 
-  signupUser(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyD7dfjvKWFqx-fYeUopXk6bnvgIg5PwcoI',
-        {
-          email,
-          password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
-  }
-
-  login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyD7dfjvKWFqx-fYeUopXk6bnvgIg5PwcoI',
-        {
-          email,
-          password,
-          returnSecureToken: true
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
-  }
-
-  autoLogin() {
+   autoLogin() {
     const userData: {
       email: string;
       id: string;
@@ -111,7 +65,6 @@ export class AuthService {
 
   logout() {
     this.store.dispatch(new AuthActions.Logout());
-    this.router.navigate(['./auth']);
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

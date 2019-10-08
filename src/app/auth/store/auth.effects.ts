@@ -1,9 +1,9 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 import * as AuthActions from './auth.actions';
@@ -33,7 +33,8 @@ const handleAuthentication = (
     email,
     userId,
     token,
-    expirationDate
+    expirationDate,
+    redirect: true
   });
 };
 
@@ -126,8 +127,10 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   authRedirect = this.actions$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS),
-    tap(() => {
-      this.router.navigate(['/']);
+    tap((authSuccessAction: AuthActions.AuthenticateSuccess) => {
+      if (authSuccessAction.payload.redirect) {
+        this.router.navigate(['/']);
+      }
     })
   );
 
@@ -150,7 +153,7 @@ export class AuthEffects {
         userData.email,
         userData.id,
         userData._token,
-        new Date(userData._tokenExpirationDate)
+        new Date(userData._tokenExpirationDate),
       );
       // checks the validity of the token and returns the authenticateSuccess action
       if (loadedUser.token) {
@@ -164,7 +167,8 @@ export class AuthEffects {
           email: loadedUser.email,
           userId: loadedUser.id,
           token: loadedUser.token,
-          expirationDate: new Date(userData._tokenExpirationDate)
+          expirationDate: new Date(userData._tokenExpirationDate),
+          redirect: false
         });
       }
       // returns an object literal to account for user's that do not have a valid token??
